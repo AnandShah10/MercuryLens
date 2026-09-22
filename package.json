@@ -1,0 +1,422 @@
+{
+  "name": "MercuryLens",
+  "displayName": "MercuryLens",
+  "description": "A Mercury development environment for VS Code: syntax highlighting, a Mercury language server, compiler integration, mode/determinism analysis, navigation, refactoring, and project tooling.",
+  "version": "0.1.1",
+  "publisher": "AnandShah",
+  "author": {
+    "name": "Anand Shah",
+    "url": "https://github.com/AnandShah10"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnandShah10/MercuryLens"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Formatters",
+    "Debuggers",
+    "Visualization"
+  ],
+  "keywords": [
+    "mercury",
+    "logic programming",
+    "functional programming",
+    "language server",
+    "mmc"
+  ],
+  "activationEvents": [
+    "onLanguage:mercury",
+    "workspaceContains:**/*.m",
+    "onCommand:mercuryTools.restartServer"
+  ],
+  "main": "./extension/out/extension.js",
+  "icon": "media/icon.png",
+  "contributes": {
+    "languages": [
+      {
+        "id": "mercury",
+        "aliases": [
+          "Mercury",
+          "mercury"
+        ],
+        "extensions": [
+          ".m",
+          ".moo"
+        ],
+        "configuration": "./syntax/language-configuration.json",
+        "icon": {
+          "light": "./media/mercury-file-light.svg",
+          "dark": "./media/mercury-file-dark.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mercury",
+        "scopeName": "source.mercury",
+        "path": "./syntax/mercury.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "Mercury Tools",
+      "properties": {
+        "mercuryTools.compilerPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Mercury compiler (mmc). Leave empty to auto-detect from PATH."
+        },
+        "mercuryTools.buildCommand": {
+          "type": "string",
+          "default": "",
+          "description": "Override the command used for 'Mercury: Build Project'. Leave empty to use 'mmc --make <main module>' auto-detected from the workspace."
+        },
+        "mercuryTools.compilerArguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra arguments always passed to mmc."
+        },
+        "mercuryTools.enableDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable diagnostics (compiler-backed when mmc is available, syntactic fallback otherwise)."
+        },
+        "mercuryTools.enableSemanticTokens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable semantic highlighting."
+        },
+        "mercuryTools.showModeInformation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show mode/instantiation information on hover."
+        },
+        "mercuryTools.showDeterminismCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a determinism/purity CodeLens above predicate and function declarations."
+        },
+        "mercuryTools.showCallGraphCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show 'N callers / M references' and 'Run Predicate' CodeLens above declarations."
+        },
+        "mercuryTools.enableProfiling": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable the performance profile view (requires a deep-profiling Mercury grade; see docs/compiler-integration.md)."
+        },
+        "mercuryTools.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Trace LSP communication between the extension and the Mercury language server."
+        },
+        "mercuryTools.maxAnalysisTime": {
+          "type": "number",
+          "default": 10000,
+          "description": "Maximum time in milliseconds to wait for a compiler-backed analysis (e.g. --errorcheck-only) before falling back to syntactic diagnostics."
+        },
+        "mercuryTools.autoBuild": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically run a check (--errorcheck-only) on save."
+        },
+        "mercuryTools.formatter.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Mercury formatting (clause-body indentation normalization)."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "mercuryTools.buildProject",
+        "title": "Mercury: Build Project"
+      },
+      {
+        "command": "mercuryTools.checkProject",
+        "title": "Mercury: Check Project"
+      },
+      {
+        "command": "mercuryTools.cleanProject",
+        "title": "Mercury: Clean Project"
+      },
+      {
+        "command": "mercuryTools.runProject",
+        "title": "Mercury: Run Project"
+      },
+      {
+        "command": "mercuryTools.runFile",
+        "title": "Mercury: Run File"
+      },
+      {
+        "command": "mercuryTools.runSelection",
+        "title": "Mercury: Run Selection"
+      },
+      {
+        "command": "mercuryTools.runPredicate",
+        "title": "Mercury: Run Predicate"
+      },
+      {
+        "command": "mercuryTools.openPlayground",
+        "title": "Mercury: Open Playground"
+      },
+      {
+        "command": "mercuryTools.debugWithMdb",
+        "title": "Mercury: Debug with mdb (Terminal)"
+      },
+      {
+        "command": "mercuryTools.startExperimentalMdbDebugSession",
+        "title": "Mercury: Start Experimental Debug Session (mdb)"
+      },
+      {
+        "command": "mercuryTools.extractPredicate",
+        "title": "Mercury: Extract Predicate"
+      },
+      {
+        "command": "mercuryTools.inlinePredicate",
+        "title": "Mercury: Inline Predicate"
+      },
+      {
+        "command": "mercuryTools.openDeepProfile",
+        "title": "Mercury: Open Deep Profile"
+      },
+      {
+        "command": "mercuryTools.showModeInformation",
+        "title": "Mercury: Show Mode Information"
+      },
+      {
+        "command": "mercuryTools.showTypeInformation",
+        "title": "Mercury: Show Type Information"
+      },
+      {
+        "command": "mercuryTools.showDeterminism",
+        "title": "Mercury: Show Determinism"
+      },
+      {
+        "command": "mercuryTools.showCallGraph",
+        "title": "Mercury: Show Predicate Call Graph"
+      },
+      {
+        "command": "mercuryTools.showModuleDependencies",
+        "title": "Mercury: Show Module Dependencies"
+      },
+      {
+        "command": "mercuryTools.openAstExplorer",
+        "title": "Mercury: Open AST Explorer"
+      },
+      {
+        "command": "mercuryTools.generateDocumentation",
+        "title": "Mercury: Generate Documentation"
+      },
+      {
+        "command": "mercuryTools.openPerformanceProfile",
+        "title": "Mercury: Open Performance Profile"
+      },
+      {
+        "command": "mercuryTools.explainDiagnostic",
+        "title": "Mercury: Explain Diagnostic"
+      },
+      {
+        "command": "mercuryTools.openCompilerOutput",
+        "title": "Mercury: Open Compiler Output"
+      },
+      {
+        "command": "mercuryTools.organizeImports",
+        "title": "Mercury: Organize Imports"
+      },
+      {
+        "command": "mercuryTools.restartServer",
+        "title": "Mercury: Restart Language Server"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "mercuryTools.showModeInformation",
+          "when": "editorLangId == mercury",
+          "group": "mercury@1"
+        },
+        {
+          "command": "mercuryTools.showTypeInformation",
+          "when": "editorLangId == mercury",
+          "group": "mercury@2"
+        },
+        {
+          "command": "mercuryTools.runSelection",
+          "when": "editorLangId == mercury && editorHasSelection",
+          "group": "mercury@3"
+        },
+        {
+          "command": "mercuryTools.debugWithMdb",
+          "when": "editorLangId == mercury",
+          "group": "mercury@4"
+        },
+        {
+          "command": "mercuryTools.extractPredicate",
+          "when": "editorLangId == mercury && editorHasSelection",
+          "group": "mercury@5"
+        },
+        {
+          "command": "mercuryTools.inlinePredicate",
+          "when": "editorLangId == mercury",
+          "group": "mercury@6"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "mercuryTools.runFile",
+          "when": "resourceLangId == mercury",
+          "group": "mercury@1"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "mercuryTools.restartServer",
+          "when": "view == mercuryToolsExplorer",
+          "group": "navigation"
+        }
+      ]
+    },
+    "views": {
+      "mercuryTools": [
+        {
+          "id": "mercuryToolsExplorer",
+          "name": "Workspace",
+          "icon": "media/mercury.svg"
+        },
+        {
+          "id": "mercuryToolsDiagnostics",
+          "name": "Diagnostics",
+          "icon": "media/mercury.svg"
+        },
+        {
+          "id": "mercuryToolsCompiler",
+          "name": "Compiler",
+          "icon": "media/mercury.svg"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "mercuryTools",
+          "title": "Mercury",
+          "icon": "media/mercury.svg"
+        }
+      ]
+    },
+    "breakpoints": [
+      {
+        "language": "mercury"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "mercury-mdb",
+        "label": "Mercury (mdb) — Experimental",
+        "languages": [
+          "mercury"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Path to a debug-grade Mercury executable (built with 'mmc --make --debug'). Use 'Mercury: Start Experimental Debug Session (mdb)' to build and launch this automatically instead of configuring it by hand."
+              },
+              "cwd": {
+                "type": "string",
+                "description": "Working directory to run the executable in."
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "Stop at the program's first trace event.",
+                "default": true
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "mercury-mdb",
+            "request": "launch",
+            "name": "Mercury (mdb): debug current program",
+            "program": "${workspaceFolder}/your_program",
+            "stopOnEntry": true
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Mercury (mdb): Launch — Experimental",
+            "description": "Debug a Mercury program via the experimental mdb DAP bridge. Prefer the 'Mercury: Start Experimental Debug Session (mdb)' command, which fills this in and builds the debug grade for you.",
+            "body": {
+              "type": "mercury-mdb",
+              "request": "launch",
+              "name": "Mercury (mdb): ${1:program}",
+              "program": "^\"\\${workspaceFolder}/${1:program}\"",
+              "stopOnEntry": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run bundle",
+    "compile": "node esbuild.js",
+    "bundle": "rimraf extension/out server/out && node esbuild.js --production",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc -p extension/tsconfig.json --noEmit && tsc -p server/tsconfig.json --noEmit",
+    "lint": "eslint extension/src server/src --ext .ts",
+    "test:unit": "mocha -r ts-node/register 'test/unit/**/*.test.ts'",
+    "test:integration": "node ./test/integration/runTest.js",
+    "package": "npm run typecheck && npm run lint && npm run test:unit && npm run bundle && vsce package -o MercuryLens.vsix",
+    "clean": "rimraf extension/out server/out *.vsix"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vscode/test-electron": "^2.3.9",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^8.56.0",
+    "glob": "^10.3.10",
+    "mocha": "^12.0.2",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@vscode/debugadapter": "^1.68.0",
+    "@vscode/debugprotocol": "^1.68.0",
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.11",
+    "vscode-uri": "^3.0.8"
+  },
+  "allowScripts": {
+    "@vscode/vsce-sign@2.1.0": true,
+    "esbuild@0.28.2": true,
+    "keytar@7.9.0": true
+  }
+}

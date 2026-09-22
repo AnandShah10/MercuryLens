@@ -1,0 +1,210 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Mercury",
+  "scopeName": "source.mercury",
+  "fileTypes": ["m", "moo"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#directives" },
+    { "include": "#strings" },
+    { "include": "#chars" },
+    { "include": "#numbers" },
+    { "include": "#pragmas" },
+    { "include": "#determinism" },
+    { "include": "#purity" },
+    { "include": "#modes-and-insts" },
+    { "include": "#keywords" },
+    { "include": "#operators" },
+    { "include": "#module-qualified-name" },
+    { "include": "#variables" },
+    { "include": "#quoted-atom" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.percentage.mercury",
+          "match": "%.*$"
+        },
+        {
+          "name": "comment.block.mercury",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.mercury",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.mercury",
+          "match": "\\\\(n|t|r|a|b|f|v|\\\\|'|\"|`|\\d+\\\\|x[0-9a-fA-F]+\\\\)"
+        }
+      ]
+    },
+    "chars": {
+      "patterns": [
+        {
+          "name": "string.quoted.other.mercury",
+          "match": "0'(\\\\.|.)"
+        },
+        {
+          "name": "string.quoted.single.mercury",
+          "begin": "(?<![A-Za-z0-9_])'",
+          "end": "'",
+          "patterns": [
+            { "name": "constant.character.escape.mercury", "match": "\\\\." }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.hex.mercury", "match": "\\b0x[0-9a-fA-F]+\\b" },
+        { "name": "constant.numeric.octal.mercury", "match": "\\b0o[0-7]+\\b" },
+        { "name": "constant.numeric.binary.mercury", "match": "\\b0b[01]+\\b" },
+        { "name": "constant.numeric.float.mercury", "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?\\b" },
+        { "name": "constant.numeric.integer.mercury", "match": "\\b[0-9]+\\b" }
+      ]
+    },
+    "directives": {
+      "patterns": [
+        {
+          "comment": "module-level declarations introduced by ':-'",
+          "match": "(:-)\\s*(module|interface|implementation|end_module|import_module|use_module|include_module)\\b",
+          "captures": {
+            "1": { "name": "keyword.operator.declaration.mercury" },
+            "2": { "name": "keyword.other.module.mercury" }
+          }
+        },
+        {
+          "match": "(:-)\\s*(pred|func)\\b",
+          "captures": {
+            "1": { "name": "keyword.operator.declaration.mercury" },
+            "2": { "name": "storage.type.function.mercury" }
+          }
+        },
+        {
+          "match": "(:-)\\s*(mode)\\b",
+          "captures": {
+            "1": { "name": "keyword.operator.declaration.mercury" },
+            "2": { "name": "storage.type.mode.mercury" }
+          }
+        },
+        {
+          "match": "(:-)\\s*(type)\\b",
+          "captures": {
+            "1": { "name": "keyword.operator.declaration.mercury" },
+            "2": { "name": "storage.type.type.mercury" }
+          }
+        },
+        {
+          "match": "(:-)\\s*(typeclass|instance)\\b",
+          "captures": {
+            "1": { "name": "keyword.operator.declaration.mercury" },
+            "2": { "name": "storage.type.typeclass.mercury" }
+          }
+        },
+        {
+          "match": "(:-)\\s*(initialise|initialize|finalise|finalize|solver)\\b",
+          "captures": {
+            "1": { "name": "keyword.operator.declaration.mercury" },
+            "2": { "name": "keyword.other.mercury" }
+          }
+        },
+        {
+          "match": "(-->)",
+          "name": "keyword.operator.dcg.mercury"
+        },
+        {
+          "match": "(:-)",
+          "name": "keyword.operator.declaration.mercury"
+        }
+      ]
+    },
+    "pragmas": {
+      "begin": "(:-)\\s*(pragma)\\b",
+      "beginCaptures": {
+        "1": { "name": "keyword.operator.declaration.mercury" },
+        "2": { "name": "keyword.other.pragma.mercury" }
+      },
+      "end": "(?=\\.\\s*($|%))",
+      "patterns": [
+        {
+          "name": "support.function.pragma-kind.mercury",
+          "match": "\\b(foreign_proc|foreign_decl|foreign_code|foreign_type|foreign_export|foreign_export_enum|foreign_import_module|inline|no_inline|memo|loop_check|minimal_model|terminates|does_not_terminate|check_termination|obsolete|source_file|fact_table|promise_equivalent_clauses|promise_pure|promise_semipure|require_tail_recursion|type_spec|reserve_tag|tabled_for_io)\\b"
+        },
+        { "include": "#strings" },
+        { "include": "#comments" },
+        { "include": "#variables" },
+        { "include": "#module-qualified-name" }
+      ]
+    },
+    "determinism": {
+      "match": "\\b(det|semidet|multi|nondet|failure|erroneous|cc_multi|cc_nondet)\\b",
+      "name": "support.type.determinism.mercury"
+    },
+    "purity": {
+      "match": "\\b(pure|semipure|impure)\\b",
+      "name": "storage.modifier.purity.mercury"
+    },
+    "modes-and-insts": {
+      "patterns": [
+        {
+          "name": "support.type.mode.mercury",
+          "match": "\\b(in|out|di|uo|mdi|muo|unused)\\b"
+        },
+        {
+          "name": "support.type.inst.mercury",
+          "match": "\\b(ground|free|bound|unique|any)\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.mercury",
+          "match": "\\b(if|then|else|not|true|fail|otherwise|some|all|switch|try|catch|catch_any)\\b"
+        },
+        {
+          "name": "keyword.other.promise.mercury",
+          "match": "\\b(promise_pure|promise_semipure|promise_impure|promise_equivalent_solutions)\\b"
+        },
+        {
+          "name": "keyword.other.where.mercury",
+          "match": "\\b(where|is)\\b"
+        },
+        {
+          "name": "keyword.other.event.mercury",
+          "match": "\\b(event)\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        { "name": "keyword.operator.arrow.mercury", "match": "(-->|->|<=>|=>|<=)" },
+        { "name": "keyword.operator.logical.mercury", "match": "(,|;|\\\\\\+)" },
+        { "name": "keyword.operator.comparison.mercury", "match": "(=\\.\\.|\\\\==|==|=<|>=|\\\\=|=|<|>)" },
+        { "name": "keyword.operator.arithmetic.mercury", "match": "(\\+|-|\\*|/|//|<<|>>|/\\\\|\\\\/|\\^)" },
+        { "name": "keyword.operator.word.mercury", "match": "\\b(mod|rem|div|xor|and|or)\\b" },
+        { "name": "keyword.operator.at.mercury", "match": "(@|\\bas\\b)" }
+      ]
+    },
+    "module-qualified-name": {
+      "match": "\\b([a-z][a-zA-Z0-9_]*(?:\\.[a-z][a-zA-Z0-9_]*)+)\\b",
+      "name": "entity.name.namespace.mercury"
+    },
+    "variables": {
+      "name": "variable.other.mercury",
+      "match": "\\b(_[A-Za-z0-9_]*|[A-Z][A-Za-z0-9_]*)\\b"
+    },
+    "quoted-atom": {
+      "name": "string.quoted.other.atom.mercury",
+      "begin": "(?<![A-Za-z0-9_])'(?=[^']*'\\s*\\()",
+      "end": "'",
+      "patterns": [{ "name": "constant.character.escape.mercury", "match": "\\\\." }]
+    }
+  }
+}

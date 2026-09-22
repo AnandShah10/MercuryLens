@@ -1,0 +1,11 @@
+node_modules/
+extension/out/
+server/out/
+*.vsix
+.vscode-test/
+*.log
+fixtures/**/*.err
+fixtures/**/*.mh
+fixtures/**/*.int*
+fixtures/**/Mercury/
+.DS_Store

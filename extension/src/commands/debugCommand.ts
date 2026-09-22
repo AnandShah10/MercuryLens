@@ -42,7 +42,7 @@ interface DebugBuildResult {
 async function selectAndBuildDebugGrade(): Promise<DebugBuildResult | undefined> {
     const folder = vscode.workspace.workspaceFolders?.[0];
     if (!folder) { vscode.window.showErrorMessage('Open a folder to debug a Mercury program.'); return undefined; }
-    if (!vscode.workspace.isTrusted) { vscode.window.showErrorMessage('Mercury Tools: debugging is disabled in untrusted workspaces.'); return undefined; }
+    if (!vscode.workspace.isTrusted) { vscode.window.showErrorMessage('MercuryLens: debugging is disabled in untrusted workspaces.'); return undefined; }
 
     const candidates = await findMainModuleCandidates(folder);
     if (candidates.length === 0) {
@@ -96,7 +96,7 @@ export async function debugWithMdb(): Promise<void> {
     const exe = process.platform === 'win32' ? `${built.moduleName}.exe` : `./${built.moduleName}`;
     terminal.sendText(`mdb ${exe}`);
     vscode.window.showInformationMessage(
-        `mdb started in the "${built.moduleName}" terminal. This is the real Mercury debugger's own command line (try 'help', 'break', 'step', 'continue', 'dd') — Mercury Tools does not reimplement its controls.`,
+        `mdb started in the "${built.moduleName}" terminal. This is the real Mercury debugger's own command line (try 'help', 'break', 'step', 'continue', 'dd') — MercuryLens does not reimplement its controls.`,
     );
 }
 

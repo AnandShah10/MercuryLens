@@ -1,4 +1,4 @@
-# Contributing to Mercury Tools
+# Contributing to MercuryLens
 
 Thanks for considering contributing. This project follows a few
 non-negotiable engineering principles (see `docs/architecture.md` and

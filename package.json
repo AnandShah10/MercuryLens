@@ -64,7 +64,7 @@
       }
     ],
     "configuration": {
-      "title": "Mercury Tools",
+      "title": "MercuryLens",
       "properties": {
         "mercuryTools.compilerPath": {
           "type": "string",

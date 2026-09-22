@@ -1,6 +1,6 @@
 # Architecture
 
-Mercury Tools follows a client/server split, as recommended for VS Code
+MercuryLens follows a client/server split, as recommended for VS Code
 language extensions: the **extension host** (`extension/`) owns VS Code UI
 (commands, webviews, tree views, status bar, terminal/process execution) and
 the **language server** (`server/`) owns Mercury-specific language

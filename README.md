@@ -1,4 +1,4 @@
-# <img src="media/mercury.svg" width="64" height="64" alt="Mercury" /> Mercury Language Tools
+# <img src="media/icon.png" width="64" height="64" alt="Mercury" /> MercuryLens
 
 <p align="center">
   <a href="https://github.com/AnandShah10/MercuryLens/blob/main/LICENSE">
@@ -17,7 +17,7 @@
 
 **A comprehensive Mercury development environment for VS Code**: syntax highlighting, full language server, real `mmc` compiler integration, advanced analysis tools, interactive visualizations, refactoring, debugging, and an in-editor Playground.
 
-> Mercury Tools is transparent about its capabilities — every feature clearly indicates whether it requires the Mercury compiler (`mmc`).
+> MercuryLens is transparent about its capabilities — every feature clearly indicates whether it requires the Mercury compiler (`mmc`).
 
 **Made with love by Anand Shah for Mercury developer community** ❤️
 
@@ -72,7 +72,7 @@ Without `mmc`, core editing features (highlighting, structural LSP features, AST
 
 ## Quick Start
 
-1. Install **Mercury Language Tools** from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=AnandShah.MercuryLens)
+1. Install **MercuryLens** from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=AnandShah.MercuryLens)
 2. Open or create a Mercury project containing `.m` files
 3. The extension automatically detects your Mercury compiler and shows status in the status bar
 4. Open the Command Palette (`Ctrl+Shift+P`) and try **Mercury: Open Playground** or **Mercury: Show Call Graph**
@@ -82,7 +82,7 @@ Without `mmc`, core editing features (highlighting, structural LSP features, AST
 
 ### Marketplace (Recommended)
 
-Search for **Mercury Language Tools** by AnandShah in the VS Code Extensions view (`Ctrl+Shift+X` or `Cmd+Shift+X` on macOS) and click Install.
+Search for **MercuryLens** by AnandShah in the VS Code Extensions view (`Ctrl+Shift+X` or `Cmd+Shift+X` on macOS) and click Install.
 
 **Direct link**: [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=AnandShah.MercuryLens)
 

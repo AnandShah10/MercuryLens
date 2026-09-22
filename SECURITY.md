@@ -2,7 +2,7 @@
 
 ## How this extension executes external programs
 
-Mercury Tools runs external processes (`mmc`, a built Mercury executable,
+MercuryLens runs external processes (`mmc`, a built Mercury executable,
 `mdb`, `mprof`, `mdprof_cgi`). All of it goes through two choke points:
 
 - `extension/src/utils/process.ts` (extension host, one-shot commands)

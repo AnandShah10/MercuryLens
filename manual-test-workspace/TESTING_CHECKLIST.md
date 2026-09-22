@@ -1,4 +1,4 @@
-# Mercury Tools — Manual Testing Checklist
+# MercuryLens — Manual Testing Checklist
 
 Open **this folder** (`manual-test-workspace/`) directly as your VS Code
 workspace — not the parent repo — so the extension only indexes these

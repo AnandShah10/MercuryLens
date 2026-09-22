@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Mercury Tools are documented here. Format loosely
+All notable changes to MercuryLens are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [0.1.1]

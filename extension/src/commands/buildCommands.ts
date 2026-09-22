@@ -9,7 +9,7 @@ import { getCompilerArguments } from '../configuration/settings';
 async function pickMainModule(folder: vscode.WorkspaceFolder): Promise<{ moduleName: string; uri: vscode.Uri } | undefined> {
     const candidates = await findMainModuleCandidates(folder);
     if (candidates.length === 0) {
-        vscode.window.showWarningMessage("No module defining 'main/2' was found in this workspace. Mercury Tools cannot guess a build target.");
+        vscode.window.showWarningMessage("No module defining 'main/2' was found in this workspace. MercuryLens cannot guess a build target.");
         return undefined;
     }
     if (candidates.length === 1) return candidates[0];
@@ -22,7 +22,7 @@ async function pickMainModule(folder: vscode.WorkspaceFolder): Promise<{ moduleN
 
 function requireTrustedWorkspace(): boolean {
     if (!vscode.workspace.isTrusted) {
-        vscode.window.showErrorMessage('Mercury Tools: build/run commands are disabled in untrusted workspaces.');
+        vscode.window.showErrorMessage('MercuryLens: build/run commands are disabled in untrusted workspaces.');
         return false;
     }
     return true;

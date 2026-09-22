@@ -1,6 +1,6 @@
 # Compiler Integration
 
-Mercury Tools treats the real Mercury compiler (`mmc`) as the single source
+MercuryLens treats the real Mercury compiler (`mmc`) as the single source
 of truth for anything requiring semantic analysis (type checking, mode
 checking, determinism checking). This document describes exactly what is
 invoked, how output is interpreted, and what happens when `mmc` is

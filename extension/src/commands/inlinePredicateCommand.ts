@@ -199,7 +199,7 @@ export function makeInlinePredicateCommand(getClient: () => LanguageClient | und
 
         const replacement = renderInlinePlan(result);
         const confirmChoice = await vscode.window.showWarningMessage(
-            `Inline '${name}/${arity}' at this call site? The callee has exactly one clause and is declared 'det' with only in/out arguments, so this should be safe, but the substitution is still a heuristic text transformation — Mercury Tools will automatically run 'mmc --errorcheck-only' afterward (when available) and offer to undo if it doesn't compile.`,
+            `Inline '${name}/${arity}' at this call site? The callee has exactly one clause and is declared 'det' with only in/out arguments, so this should be safe, but the substitution is still a heuristic text transformation — MercuryLens will automatically run 'mmc --errorcheck-only' afterward (when available) and offer to undo if it doesn't compile.`,
             { modal: true },
             'Inline',
         );

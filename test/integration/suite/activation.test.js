@@ -1,7 +1,7 @@
 const assert = require('assert');
 const vscode = require('vscode');
 
-suite('Mercury Tools: extension activation', () => {
+suite('MercuryLens: extension activation', () => {
     test('activates on a .m file and registers its commands', async () => {
         const ext = vscode.extensions.getExtension('AnandShah.MercuryLens');
         assert.ok(ext, 'extension should be discoverable by publisher.name');

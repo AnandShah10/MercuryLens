@@ -50,7 +50,7 @@ export async function runFile(uriArg?: vscode.Uri): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     const uri = uriArg ?? editor?.document.uri;
     if (!uri) { vscode.window.showErrorMessage('No Mercury file to run.'); return; }
-    if (!vscode.workspace.isTrusted) { vscode.window.showErrorMessage('Mercury Tools: running code is disabled in untrusted workspaces.'); return; }
+    if (!vscode.workspace.isTrusted) { vscode.window.showErrorMessage('MercuryLens: running code is disabled in untrusted workspaces.'); return; }
 
     const doc = await vscode.workspace.openTextDocument(uri);
     const text = doc.getText();
@@ -101,7 +101,7 @@ export async function runFile(uriArg?: vscode.Uri): Promise<void> {
 export async function runSelection(): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor || editor.selection.isEmpty) { vscode.window.showErrorMessage('Select a Mercury goal to run.'); return; }
-    if (!vscode.workspace.isTrusted) { vscode.window.showErrorMessage('Mercury Tools: running code is disabled in untrusted workspaces.'); return; }
+    if (!vscode.workspace.isTrusted) { vscode.window.showErrorMessage('MercuryLens: running code is disabled in untrusted workspaces.'); return; }
 
     const selectedText = editor.document.getText(editor.selection).trim().replace(/\.\s*$/, '');
     const moduleName = `playground_${Date.now()}`;
@@ -149,7 +149,7 @@ interface PredicateSignature {
  * harness to display it generically, this is surfaced to the user rather
  * than silently guessed. */
 export async function runPredicate(uriArg?: string, nameArg?: string, arityArg?: number): Promise<void> {
-    if (!vscode.workspace.isTrusted) { vscode.window.showErrorMessage('Mercury Tools: running code is disabled in untrusted workspaces.'); return; }
+    if (!vscode.workspace.isTrusted) { vscode.window.showErrorMessage('MercuryLens: running code is disabled in untrusted workspaces.'); return; }
     const editor = vscode.window.activeTextEditor;
     const uri = uriArg ? vscode.Uri.parse(uriArg) : editor?.document.uri;
     if (!uri) return;

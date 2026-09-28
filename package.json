@@ -387,7 +387,7 @@
     "lint": "eslint extension/src server/src --ext .ts",
     "test:unit": "mocha -r ts-node/register 'test/unit/**/*.test.ts'",
     "test:integration": "node ./test/integration/runTest.js",
-    "package": "npm run typecheck && npm run lint && npm run test:unit && npm run bundle && vsce package -o MercuryLens.vsix",
+    "package": "npm run typecheck && npm run lint && npm run test:unit && npm run bundle && vsce package",
     "clean": "rimraf extension/out server/out *.vsix"
   },
   "devDependencies": {

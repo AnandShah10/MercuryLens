@@ -3,6 +3,24 @@
 All notable changes to MercuryLens are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.2]
+
+### Fixed
+- **Organize Imports was silently unable to ever remove an unused,
+  workspace-indexed import.** The "is this module used?" check scanned
+  the *entire file text* for the module's qualifier (e.g. `lib.`), which
+  trivially matched inside the import declaration line itself
+  (`:- import_module lib.`) — so every import always looked "used" by
+  matching its own declaration, regardless of whether anything in the
+  actual code referenced it. Fixed by excluding the import/use_module
+  declaration lines from the text scanned for usage evidence
+  (`server/src/refactoring/organizeImports.ts`). Also fixed a stricter
+  bug where the code action was only offered when a file had *more than
+  one* import declaration line, so a file with a single
+  `:- import_module a, b, c.` line (however unused its contents) got no
+  action at all. Also implemented the dedupe-and-sort behavior the
+  feature's doc comment had always claimed but never actually did.
+
 ## [0.1.1]
 
 ### Fixed

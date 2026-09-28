@@ -13,7 +13,7 @@ export async function organizeImports(): Promise<void> {
     );
     const action = actions?.find((a): a is vscode.CodeAction => 'edit' in a && !!a.edit);
     if (!action?.edit) {
-        vscode.window.showInformationMessage('Mercury: nothing to organize (no unused imports detected).');
+        vscode.window.showInformationMessage('Mercury: imports are already organized (nothing to dedupe, sort, or remove).');
         return;
     }
     await vscode.workspace.applyEdit(action.edit);

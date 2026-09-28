@@ -114,11 +114,27 @@ Predicates, Functions, and Type classes, including the doc comments
 written above each declaration in the source.
 
 ### 1.15 Organize Imports
-Open `consumer.m` and temporarily add `:- import_module string.` to the
-existing `:- import_module library, list, int.` line (make it its own
-line or add to the list) without using anything from `string` anywhere in
-the file. Run `Mercury: Organize Imports` — the unused import should be
-removed. Undo afterward.
+Open `consumer.m` and temporarily add `:- import_module cyclic_a.` on its
+own new line (anywhere after `:- implementation.`), without calling
+`a_pred` or writing `cyclic_a.` anywhere in the file. Run `Mercury:
+Organize Imports` — since `cyclic_a` is a **workspace-local** module (this
+extension can see its exports and confirm it's genuinely unused), that
+import line should be removed. Undo afterward.
+
+**Now try the opposite, to see the safety boundary**: add an unused
+`:- import_module string.` instead. Run `Mercury: Organize Imports`
+again — this one should **NOT** be removed, even though it's just as
+unused. `string` is a standard-library module this extension has no
+indexed information about, so it can't confirm non-use, and conservatively
+always keeps it rather than risk deleting a real import. This is correct,
+deliberate behavior (see `docs/development.md`), not a bug — Organize
+Imports can only clean up unused imports of other modules *within your
+workspace*, not standard-library ones. Undo afterward.
+
+Also try adding the same module on two separate `:- import_module` lines
+(e.g. `:- import_module int.` twice) — running Organize Imports should
+merge them into one, alphabetically sorted line rather than leaving a
+duplicate.
 
 ### 1.16 Syntactic diagnostics (no compiler)
 With **no compiler configured**, open `errors_undefined.m`. You should see

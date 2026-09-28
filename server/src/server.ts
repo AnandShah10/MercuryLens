@@ -47,6 +47,7 @@ import { buildImportGraph } from './dependency/dependencyGraph';
 import { formatModeSection } from './modes/modeInfo';
 import { describeDeterminism } from './determinism/determinismInfo';
 import { formatTypeHover } from './types/typeInfo';
+import { computeOrganizeImportsEdits } from './refactoring/organizeImports';
 import { ModuleDoc, SymbolNode, ClauseNode } from './parser/ast';
 
 const connection = createConnection(ProposedFeatures.all);
@@ -558,40 +559,27 @@ connection.onCodeAction((params: CodeActionParams): CodeAction[] => {
     const actions: CodeAction[] = [];
 
     // Organize imports: dedupe + sort import_module/use_module lines, and
-    // drop imports that have zero call-site references to their module's
-    // exported names within this file (best-effort; only offered, never
-    // applied automatically).
-    const importSymbols = parsedDoc.symbols.filter((s) => s.kind === 'import' || s.kind === 'use_module');
-    if (importSymbols.length > 1) {
-        const text = doc.getText();
-        const usedModules = new Set<string>();
-        for (const mod of [...parsedDoc.imports, ...parsedDoc.useModules]) {
-            const modDoc = index.findModule(mod);
-            const exportedNames = modDoc ? modDoc.symbols.filter((s) => s.kind === 'predicate' || s.kind === 'function').map((s) => s.name) : [];
-            const qualifiedRe = new RegExp(`\\b${mod.replace('.', '\\.')}\\.`);
-            const anyCallRe = exportedNames.length ? new RegExp(`\\b(${exportedNames.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\s*\\(`) : null;
-            if (qualifiedRe.test(text) || (anyCallRe && anyCallRe.test(text)) || exportedNames.length === 0) {
-                usedModules.add(mod);
-            }
-        }
-        const edits: TextEdit[] = [];
-        for (const sym of importSymbols) {
-            const kind = sym.kind === 'use_module' ? 'use_module' : 'import_module';
-            const kept = (sym.importedModules ?? []).filter((m) => usedModules.has(m));
-            const range = LspRange.create(Position.create(sym.range.startLine, sym.range.startCol), Position.create(sym.range.endLine, sym.range.endCol));
-            if (kept.length === 0) {
-                edits.push(TextEdit.replace(range, ''));
-            } else if (kept.length !== (sym.importedModules ?? []).length) {
-                edits.push(TextEdit.replace(range, `:- ${kind} ${kept.join(', ')}.`));
-            }
-        }
-        if (edits.length > 0) {
-            actions.push({
-                title: 'Organize imports (remove unused)',
-                kind: CodeActionKind.SourceOrganizeImports,
-                edit: { changes: { [params.textDocument.uri]: edits } },
-            });
-        }
+    // drop imports confirmed unused (see organizeImports.ts's conservative-
+    // safety note — a module this extension can't see the exports of,
+    // e.g. a standard-library one, is always kept). Offered whenever there
+    // is at least one import/use_module declaration to (re)organize —
+    // never applied automatically.
+    const organizeEdits = computeOrganizeImportsEdits(parsedDoc, doc.getText(), index);
+    if (organizeEdits.length > 0) {
+        actions.push({
+            title: 'Organize imports (dedupe, sort, remove confirmed-unused)',
+            kind: CodeActionKind.SourceOrganizeImports,
+            edit: {
+                changes: {
+                    [params.textDocument.uri]: organizeEdits.map((e) =>
+                        TextEdit.replace(
+                            LspRange.create(Position.create(e.range.startLine, e.range.startCol), Position.create(e.range.endLine, e.range.endCol)),
+                            e.newText,
+                        ),
+                    ),
+                },
+            },
+        });
     }
 
     for (const d of params.context.diagnostics) {

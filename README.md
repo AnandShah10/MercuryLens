@@ -121,15 +121,19 @@ All commands appear in the Command Palette with the **Mercury:** prefix (e.g. **
 
 ## Screenshots
 
-> **Screenshots and animated GIFs should be added here before publishing to the VS Code Marketplace.** Recommended images/GIFs:
->
-> - Editor showing syntax highlighting, semantic tokens, CodeLens, hovers, and refactoring
-> - Interactive Predicate **Call Graph** (with pan, zoom, search, filter)
-> - **AST Explorer** with synchronized source and tree views
-> - **Mercury sidebar** (Workspace tree, Diagnostics, Compiler status)
-> - Deep Profile viewer and Playground in action
+### Hover Information & Syntax Highlighting
+![Hover Information and Syntax Highlighting](media/Hover.png)
 
-*(High quality visuals are one of the most important factors for a successful VS Code Marketplace listing.)*
+### Predicate Call Graph
+![Interactive Predicate Call Graph](media/PredicateCall.png)
+
+### AST Explorer
+![AST Explorer with synchronized panes](media/AST.png)
+
+### Mercury Sidebar
+![Mercury Sidebar (Workspace, Diagnostics, Compiler views)](media/Sidebar.png)
+
+*Additional screenshots/GIFs for refactoring, Deep Profile, Playground, and module dependency graph can be added as features evolve.*
 
 ## Documentation
 
